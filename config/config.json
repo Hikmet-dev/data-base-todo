@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "memasik4321",
+    "database": "db_todo",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "memasik4321",
+    "database": "db_todo",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "memasik4321",
+    "database": "db_todo",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
