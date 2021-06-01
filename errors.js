@@ -1,4 +1,3 @@
-
 class ErrorHandler extends Error {
     constructor(statusCode, message, stack) {
       super();
@@ -6,7 +5,7 @@ class ErrorHandler extends Error {
       this.message = message;
       this.stack = stack;
     }
-  };
+ };
 
 const handleError = (err, res) => {
     const { statusCode, message, stack } = err;

@@ -4,6 +4,7 @@
     "password": "437668820Asd",
     "database": "db_todo",
     "host": "localhost",
+    "port": 5432,
     "dialect": "postgres"
   },
   "test": {

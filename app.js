@@ -1,4 +1,3 @@
-
 const express = require('express');
 const taskGET =  require('./api/tasks.get.js');
 const taskDELETE = require('./api/task.delete.js');
@@ -6,29 +5,15 @@ const taskPATCH =  require('./api/task.patch.js');
 const taskPOST =  require('./api/task.post.js');
 const morgan = require('morgan');
 const { handleError } = require('./errors.js');
-
 const { sequelize } = require('./models');
-
-
-
 
 const app = express();
 
-
 const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 
-
-
-
-
-
-
-
 app.use(morgan('combined'));
-app.get('/', (req, res) => {
-  res.send('<h1>Todo-back-end</h1>')
-})
 app.use(taskGET);
 app.use(taskPOST);
 app.use(taskPATCH);
@@ -41,8 +26,6 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     handleError(err, res);
   })
-
-
 
 app.listen({port: PORT}, async () => {
   console.log('Server uo on');

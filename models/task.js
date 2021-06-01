@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     done: {
       type: DataTypes.BOOLEAN,
-      allowNull: false}
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Task',

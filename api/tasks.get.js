@@ -10,7 +10,7 @@ const router = Router();
 
 
 router.get('/tasks',
-        query('filterBy').isBoolean().optional({checkFalsy: true}),
+        query('filterBy').optional({checkFalsy: true}),
         query('order').isString().toUpperCase().optional({checkFalsy: true}),
         query('page').isInt().optional({checkFalsy: true}),
         query('taskCount').isInt().optional({checkFalsy: true}),
@@ -22,9 +22,9 @@ router.get('/tasks',
                     throw new ErrorHandler(422, 'Invalid fields in request', errors.array());
                 };
                 const orderField = {'ASC': 'ASC', 'DESC': 'DESC', '': 'DESC'};
-                const filterByField = {true: true, false: false}
+                const filterByField = { true: true, false: false, 'done': true, 'undone': false }
 
-                if(!orderField[order]){
+                if(!orderField[order] || filterByField[filterBy]) {
                     throw new ErrorHandler(422, 'Invalid query value')
                 };
                 
