@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "postgres",
-    "password": "memasik4321",
+    "password": "437668820Asd",
     "database": "db_todo",
     "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "memasik4321",
+    "password": "437668820Asd",
     "database": "db_todo",
     "host": "localhost",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": "memasik4321",
+    "password": "437668820Asd",
     "database": "db_todo",
     "host": "localhost",
     "dialect": "postgres"

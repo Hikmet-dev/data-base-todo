@@ -1,14 +1,12 @@
-import { Router } from 'express';
-import fs from 'fs';
-import path from 'path';
-import { body, param, validationResult } from 'express-validator';
-import { ErrorHandler } from '../errors.js';
+const { Router } = require('express');
+const fs = require('fs');
+const { body, param, validationResult } = require('express-validator');
+const { ErrorHandler } = require('../errors.js');
 
 
 
 
 const router = Router();
-const __dirname = path.resolve();
 
 
 
@@ -55,4 +53,4 @@ router.patch('/task/:idParam/',
         });
 })
 
-export default router;
+module.exports = router;

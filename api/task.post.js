@@ -1,14 +1,13 @@
-import express, { Router } from 'express';
-import fs from 'fs';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
-import { body, validationResult } from 'express-validator';
-import { ErrorHandler } from '../errors.js';
+const express = require('express');
+const { Router } = require('express');
+const fs = require('fs');
+const { v4 } = require('uuid');
+const { body, validationResult } = require('express-validator');
+const { ErrorHandler } = require('../errors.js');
 
-
+const uuidv4 = v4();
 const app = express();
 const router = Router();
-const __dirname = path.resolve();
 
 
 
@@ -53,4 +52,4 @@ router.post('/task',
             
 });
 
-export default router;
+module.exports = router;

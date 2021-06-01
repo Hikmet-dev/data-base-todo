@@ -1,12 +1,11 @@
-import { Router } from 'express';
-import { query, validationResult } from 'express-validator';
-import { ErrorHandler } from '../errors.js';
+const { Router } = require('express');
+const { query, validationResult } = require('express-validator');
+const { ErrorHandler } = require('../errors.js');
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const router = Router();
-const __dirname = path.resolve();
 
 
 
@@ -47,5 +46,4 @@ router.get('/tasks',
     });
 });
 
-
-export default router;
+module.exports = router;

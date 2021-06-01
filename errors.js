@@ -1,5 +1,5 @@
 
-export class ErrorHandler extends Error {
+class ErrorHandler extends Error {
     constructor(statusCode, message, stack) {
       super();
       this.statusCode = statusCode;
@@ -8,7 +8,7 @@ export class ErrorHandler extends Error {
     }
   };
 
-export const handleError = (err, res) => {
+const handleError = (err, res) => {
     const { statusCode, message, stack } = err;
     console.log(err);
     res.status(statusCode).send({
@@ -18,4 +18,5 @@ export const handleError = (err, res) => {
       stack
     });
   };
-  
+
+module.exports = { ErrorHandler, handleError};

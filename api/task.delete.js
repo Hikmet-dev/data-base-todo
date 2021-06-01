@@ -1,13 +1,10 @@
-import { Router } from 'express';
-import fs from 'fs';
-import path from 'path';
-import { param, validationResult } from 'express-validator';
-import { ErrorHandler } from '../errors.js';
-import { nextTick } from 'process';
+const { Router } = require('express');
+const fs = require('fs');
+const { param, validationResult } = require('express-validator');
+const { ErrorHandler } = require('../errors.js');
 
 
 const router = Router();
-const __dirname = path.resolve()
 
 
 router.delete('/task/:idParam', 
@@ -48,5 +45,4 @@ router.delete('/task/:idParam',
             }
         });
 
-
-export default router;
+module.exports = router;
