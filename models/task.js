@@ -12,15 +12,24 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    toJSON(){
+      return{ ...this.get(), id: undefined }
+    }
   };
   Task.init({
-    name: {
-      type: DataTypes.STRING,
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    done: DataTypes.BOOLEAN,
-    doneR: DataTypes.BOOLEAN
-
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    done: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false}
   }, {
     sequelize,
     modelName: 'Task',

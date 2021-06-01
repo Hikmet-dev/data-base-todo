@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const fs = require('fs');
 const { body, param, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../errors.js');
+const { Task } = require('../models');
 
 
 
@@ -14,43 +14,27 @@ router.patch('/task/:idParam/',
             body('done').isBoolean(), 
             body('name').isString().isLength({min: 3}), 
             param('idParam').isUUID(), 
-            (req, res, next) => {
+            async (req, res, next) => {
+            try{
+                const idParam = req.params['idParam'];
+                const {name, done} = req.body;
 
-    const idParam = req.params['idParam'];
-    const body = req.body;
 
-
-
-    const errors = validationResult(req);
-    if(!errors.isEmpty()) {
-        const error = new ErrorHandler(422, 'Invalid fields in request', errors.array());
-        return next(error);
-    };
-
-    fs.readFile(__dirname + '/tasks.json', 'utf-8', (err, data) => {
-            if (err) {
-                console.log(err);
-            }
-    
-            const taskList = JSON.parse(data.toString());
-            const index = taskList.findIndex(item => item.id === idParam);
-
-            if(index === -1) {
-                const error = new ErrorHandler(400, "Task not found")
-                return next(error)
-            };
-            const newObjs = {...taskList[index], ...body };
-            taskList[index] = newObjs;
-
-            
-
-            fs.writeFile(__dirname + '/tasks.json', JSON.stringify(taskList, null, 2), (err) => {
-                if(err)  {
-                    console.log(err);
+                const task = await Task.update({name, done}, {
+                    where: {
+                        uuid: idParam
+                    }
+                });
+                if(!task[0]){
+                    throw new ErrorHandler(422, 'Task not found')
                 }
-                return res.sendStatus(200)
-            });
-        });
-})
+
+                res.json(task);
+
+            } catch (error) {
+                console.log(error);
+                next(error);
+            }
+});
 
 module.exports = router;

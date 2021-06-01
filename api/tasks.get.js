@@ -1,10 +1,9 @@
 const { Router } = require('express');
 const { query, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../errors.js');
+const { Op } = require("sequelize");
 
-const fs = require('fs');
-const path = require('path');
-
+const { Task } = require('../models');
 const router = Router();
 
 
@@ -12,38 +11,42 @@ const router = Router();
 
 router.get('/tasks',
         query('filterBy').isBoolean().optional({checkFalsy: true}),
-        query('order').isString().optional({checkFalsy: true}),
+        query('order').isString().toUpperCase().optional({checkFalsy: true}),
         query('page').isInt().optional({checkFalsy: true}),
         query('taskCount').isInt().optional({checkFalsy: true}),
-         (req, res, next) => {
+        async (req, res, next) => {
+            try{
+                const { filterBy, order = 'DESC', taskCount = 100, page = 1}  = req.query;
+                const errors = validationResult(req);
+                if(!errors.isEmpty()) {
+                    throw new ErrorHandler(422, 'Invalid fields in request', errors.array());
+                };
+                const orderField = {'ASC': 'ASC', 'DESC': 'DESC', '': 'DESC'};
+                const filterByField = {true: true, false: false}
 
-    const { filterBy, order, taskCount = 100, page = 1}  = req.query;
+                if(!orderField[order]){
+                    throw new ErrorHandler(422, 'Invalid query value')
+                };
+                
+                const tasks = await Task.findAll({
+                    where: {
+                      done: 'all'
+                    },
+                    order: [["createdAt", orderField[order] ]],
+                    offset: (page - 1) * taskCount,
+                    limit: taskCount
+                });
 
-    const errors = validationResult(req);
-    if(!errors.isEmpty()) {
-        const error = new ErrorHandler(422, 'Invalid fields in request', errors.array());
-        return next(error);
-    };
+                // const pageCount = Math.ceil(tasks.length / taskCount);
+                // const activePage = page <= pageCount ? page : pageCount;
+                // const sliceTasksList = tasks.slice((activePage - 1) * taskCount, activePage * taskCount);
 
-    fs.readFile(__dirname + '/tasks.json','utf-8', (err, data) => {
-        if (err) {
-            console.log(err);   
-        }
+                return res.json(tasks)
 
-        const tasks = JSON.parse(data);
-
-        const filterTasksList = tasks.filter(item => filterBy ? item.done.toString() === filterBy : item);
-        
-        const pageCount = Math.ceil(filterTasksList.length / taskCount);
-        const activePage = page <= pageCount ? page : pageCount;
-        const sliceTasksList = filterTasksList.slice((activePage - 1) * taskCount, activePage * taskCount); 
-        const sortTasksList = sliceTasksList.sort((a, b) => Date.parse((order === "asc" ? a : b).created_at) - Date.parse((order === "asc" ? b : a).created_at));    
-        
-        return res.send({
-            tasks: sortTasksList,
-            pageCount
-        });
-    });
+            } catch(error) {
+                next(error);
+               
+            }
 });
 
 module.exports = router;
