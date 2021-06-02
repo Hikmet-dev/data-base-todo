@@ -16,7 +16,7 @@ router.delete('/task/:idParam',
 
                 const errors = validationResult(req);
                 if(!errors.isEmpty()) {
-                    throw new ErrorHandler(422, 'Invalid fields in request', errors.array());
+                    throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());
                 };
 
                 const task = await Task.destroy({
@@ -25,7 +25,7 @@ router.delete('/task/:idParam',
                     }
                 });
                 if (!task) {
-                    throw new ErrorHandler(422, 'Itask not faund');
+                    throw new ErrorHandler().notFound('Task not found');
                 }
                 return res.sendStatus(200);
             } catch (error) {

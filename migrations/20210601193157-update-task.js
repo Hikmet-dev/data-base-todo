@@ -14,7 +14,7 @@ module.exports = {
       });
       await queryInterface.changeColumn('Tasks', 'done', {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        defaultValue: DataTypes.BOOLEAN
       });
   },
 
