@@ -22,7 +22,6 @@ module.exports = {
     "database": process.env.DB_PROD_DBNAME,
     "host": process.env.DB_PROD_HOST,
     "posr": process.env.DB_PROD_PORT,
-    "url": process.env.DB_PROD_URL,
     "dialect": "postgres"
   }
 }
