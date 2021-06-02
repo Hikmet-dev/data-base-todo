@@ -17,10 +17,12 @@ module.exports = {
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres",
-    "password": "437668820Asd",
-    "database": "db_todo",
-    "host": "localhost",
+    "username": process.env.DB_PROD_USER,
+    "password": process.env.DB_PROD_PASS,
+    "database": process.env.DB_PROD_DBNAME,
+    "host": process.env.DB_PROD_HOST,
+    "posr": process.env.DB_PROD_PORT,
+    "url": process.env.DB_PROD_URL,
     "dialect": "postgres"
   }
 }
