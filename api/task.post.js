@@ -22,7 +22,7 @@ router.post('/task',
             }
 
             const task = await Task.create({ ...body });
-            return res.json(task);
+            return res.sendStatus(201).json(task);
         } catch (err) {
             console.log(err);
             next(err)

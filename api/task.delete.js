@@ -3,10 +3,7 @@ const fs = require('fs');
 const { param, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../errors.js');
 const { Task } = require('../models');
-
-
 const router = Router();
-
 
 router.delete('/task/:idParam', 
             param('idParam').isUUID(), 

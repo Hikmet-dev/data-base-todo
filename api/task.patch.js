@@ -5,8 +5,8 @@ const { Task } = require('../models');
 const router = Router();
 
 router.patch('/task/:idParam/', 
-            body('done').isBoolean().optional({checkFalsy: true}), 
-            body('name').trim().isString().isLength({min: 3}).optional({checkFalsy: true}), 
+            body('done').isBoolean(), 
+            body('name').trim().isString().isLength({min: 3}), 
             param('idParam').isUUID(), 
             async (req, res, next) => {
             try{
@@ -18,16 +18,23 @@ router.patch('/task/:idParam/',
                     throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());
                 };
 
+                const findTask = await Task.findOne({where: { name: body.name }});
+
+                if(findTask) {
+                    throw new ErrorHandler(404, "The task already exists")
+                };
+
                 const task = await Task.update({ ...body }, {
                     where: {
                         uuid: idParam
                     }
                 });
+
                 if(!task[0]){
                     throw new ErrorHandler(422, 'Task not found')
                 }
 
-                res.json(task);
+                res.sendStatus(201);
 
             } catch (error) {
                 console.log(error);
