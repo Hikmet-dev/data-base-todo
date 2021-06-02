@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 app.use(morgan('combined'));
-app.get('/', (res, req) => {
+app.get('/', (req, res) => {
   res.send('<h1>Data Base todo</h1>')
 })
 app.use(taskGET);
