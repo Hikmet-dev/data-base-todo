@@ -21,6 +21,12 @@ require('dotenv').config({ path: __dirname + '/.env' });
     database: process.env.DB_PROD_DBNAME,
     host: process.env.DB_PROD_HOST,
     port: process.env.DB_PROD_PORT,
-    dialect: "postgres"
+    dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   }
 }
