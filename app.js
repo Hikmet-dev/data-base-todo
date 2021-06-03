@@ -15,10 +15,7 @@ app.use(express.json());
 
 app.use(morgan('combined'));
 app.get('/', (req, res) => {
-  res.send('<h1>Data Base todo</h1>')
-})
-app.get('/favicon.ico', (req, res) => {
-  res.sendFile('./favicon.ico')
+  return res.send('<h1>Data Base todo</h1>')
 });
 app.use(taskGET);
 app.use(taskPOST);

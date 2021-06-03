@@ -34,7 +34,7 @@ router.patch('/task/:idParam/',
                     throw new ErrorHandler(422, 'Task not found')
                 }
 
-                res.sendStatus(201);
+                return res.sendStatus(201);
 
             } catch (error) {
                 console.log(error);
