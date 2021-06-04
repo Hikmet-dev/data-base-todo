@@ -2,9 +2,6 @@ const { ErrorHandler } = require('../errors.js');
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    if(req.method === "OPTIONS") {
-        next();
-    };
     try {
         const token = req.headers.authorization;
         if(!token) {

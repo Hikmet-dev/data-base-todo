@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const router = Router();
 const { body, validationResult } = require('express-validator');
-const { ErrorHandler } = require('../errors.js');
-const { User } = require('../models');
+const { ErrorHandler } = require('../../errors.js');
+const { User } = require('../../models');
 const bcrypt = require('bcrypt');
 
 

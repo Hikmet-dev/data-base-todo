@@ -1,26 +1,25 @@
 const { Router } = require('express');
-const { body, param, validationResult } = require('express-validator');
-const { ErrorHandler } = require('../errors.js');
-const { Task } = require('../models');
+const { body, param } = require('express-validator');
+const { ErrorHandler } = require('../../errors.js');
+const { Task } = require('../../models');
 const router = Router();
-const authMiddleware = require('../middleware/authMiddleware.js');
+const authMiddleware = require('../../middleware/authMiddleware.js');
 const { Op } = require("sequelize");
+const errorMiddleware = require('../../middleware/errorMiddleware.js');
+
 
 
 router.patch('/task/:idParam/', 
             body('done').optional({checkFalsy: true}).isBoolean(), 
             body('name').optional({checkFalsy: true}).trim().isString().isLength({min: 3}), 
             param('idParam').isUUID(),
+            errorMiddleware,
             authMiddleware, 
             async (req, res, next) => {
             try{
                 const idParam = req.params['idParam'];
                 const body = req.body;
-                const {id, email} = req.user;
-                const errors = validationResult(req);
-                if(!errors.isEmpty()) {
-                    throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());
-                };
+                const {id, email} = res.locals.user;
 
                 const findTask = await Task.findOne({
                     where: { 

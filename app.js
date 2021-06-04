@@ -1,13 +1,10 @@
 const express = require('express');
-const taskGET =  require('./api/tasks.get.js');
-const taskDELETE = require('./api/task.delete.js');
-const taskPATCH =  require('./api/task.patch.js');
-const taskPOST =  require('./api/task.post.js');
-const signin = require('./auth/signin.post.js');
-const login = require("./auth/login.post.js");
 const morgan = require('morgan');
 const { handleError } = require('./errors.js');
 const { sequelize } = require('./models');
+const recursive = require('recursive-readdir-sync');
+
+
 
 const app = express();
 
@@ -16,26 +13,19 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 app.use(morgan('combined'));
-app.get('/', (req, res) => {
-  return res.send('<h1>Data Base todo</h1>')
-});
-app.use(signin);
-app.use(login);
-app.use(taskGET);
-app.use(taskPOST);
-app.use(taskPATCH);
-app.use(taskDELETE);
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+
+recursive(`${__dirname}/routes`)
+    .forEach(file => app.use('/', require(file)));
+
 app.use((err, req, res, next) => {
     handleError(err, res);
   });
+
+
 
 app.listen({port: PORT}, async () => {
   console.log('Server uo on');
   await sequelize.authenticate();
   console.log('Datebase synced!');
 });
+

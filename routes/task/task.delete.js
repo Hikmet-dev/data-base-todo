@@ -1,22 +1,20 @@
 const { Router } = require('express');
-const { param, validationResult } = require('express-validator');
-const { ErrorHandler } = require('../errors.js');
-const { Task } = require('../models');
+const { param } = require('express-validator');
+const { ErrorHandler } = require('../../errors.js');
+const { Task } = require('../../models');
 const router = Router();
-const authMiddleware = require('../middleware/authMiddleware.js');
+const authMiddleware = require('../../middleware/authMiddleware.js');
+const errorMiddleware = require('../../middleware/errorMiddleware.js');
 
 router.delete('/task/:idParam', 
     param('idParam').isUUID(),
+    errorMiddleware,
     authMiddleware, 
     async (req, res, next) => {
     try{
         const idParam = req.params.idParam;
         const {id} = req.user;
 
-        const errors = validationResult(req);
-        if(!errors.isEmpty()) {
-            throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());
-        };
 
         const task = await Task.destroy({
             where: {
