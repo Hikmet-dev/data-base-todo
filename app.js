@@ -4,6 +4,7 @@ const taskDELETE = require('./api/task.delete.js');
 const taskPATCH =  require('./api/task.patch.js');
 const taskPOST =  require('./api/task.post.js');
 const signin = require('./auth/signin.post.js');
+const login = require("./auth/login.post.js");
 const morgan = require('morgan');
 const { handleError } = require('./errors.js');
 const { sequelize } = require('./models');
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
   return res.send('<h1>Data Base todo</h1>')
 });
 app.use(signin);
+app.use(login);
 app.use(taskGET);
 app.use(taskPOST);
 app.use(taskPATCH);

@@ -3,15 +3,21 @@ const { query, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../errors.js');
 const { Task } = require('../models');
 const router = Router();
+const authMiddleware = require('../middleware/authMiddleware.js');
+
+
 
 router.get('/tasks',
         query('filterBy').optional({checkFalsy: true}),
         query('order').isString().toUpperCase().optional({checkFalsy: true}),
         query('page').default(1).isInt(),
         query('taskCount').default(100).isInt(),
+        authMiddleware,
         async (req, res, next) => {
             try{
                 const { filterBy, order, taskCount, page}  = req.query;
+                const { user } = req;
+                console.log(user);
                 const errors = validationResult(req);
                 if(!errors.isEmpty()) {
                     throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());

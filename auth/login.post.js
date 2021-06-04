@@ -4,6 +4,9 @@ const { body, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../errors.js');
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+
+
 
 
 
@@ -19,12 +22,21 @@ router.post('/login',
         const { email, password } = req.body;
 
         const findUser = await User.findOne({where: {email}});
-        if(findUser) {
+        if(!findUser) {
             throw new ErrorHandler(400, 'User already exists');
         };
 
-        res.json(findUser);
-        // const sdaasd = bcrypt.compareSync()
+        const passVerif = bcrypt.compareSync(password, findUser.hashedPassword);
+        if(!passVerif) {
+            throw new ErrorHandler(400, 'Wrong password');
+        };
+        const token = await jwt.sign({id: findUser.id, email: findUser.email}, 'memasik', { expiresIn: "20h" });
+
+        console.log(token);
+
+
+        
+        return res.json({token});
 
 
 
@@ -35,3 +47,5 @@ router.post('/login',
         
 
 }); 
+
+module.exports = router;
