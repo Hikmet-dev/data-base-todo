@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }; 
   User.init({
-    user_id: {
+    id: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
@@ -35,10 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     hashedPassword:{
       type: DataTypes.STRING(64),
       allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING,
-      unique: true
     }
   }, {
     sequelize,

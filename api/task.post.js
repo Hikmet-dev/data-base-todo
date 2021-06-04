@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { body, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../errors.js');
-const { Task } =require('../models')
+const { Task } = require('../models')
 const router = Router();
 
 router.post('/task',

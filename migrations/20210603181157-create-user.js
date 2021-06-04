@@ -2,7 +2,7 @@
 module.exports = {
   up: async (queryInterface, DataTypes) => {
     await queryInterface.createTable('Users', {
-      user_id: {
+      id: {
         allowNull: false,
         primaryKey: true,
         type: DataTypes.UUID,
@@ -21,9 +21,9 @@ module.exports = {
         unique: true,
         isEmail: true
       },
-      phone: {
+      hashedPassword:{
         type: DataTypes.STRING,
-        unique: true
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

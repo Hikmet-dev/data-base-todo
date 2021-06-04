@@ -19,16 +19,16 @@ router.post('/signin',
         };
         const { firstName, lastName, email, password } = req.body;
 
-        const findUser = await User.findOne({where: {name: email}});
+        const findUser = await User.findOne({where: {email}});
         if(findUser) {
             throw new ErrorHandler(400, 'User already exists');
         };
-        const hashPassword = bcrypt.hashSync(password, 7);
+        const hashedPassword = bcrypt.hashSync(password, 7);
 
-        const newUser = await User.create({firstName, lastName, email, hashedPassword: hashPassword })
+       const newUser = await User.create({firstName, lastName, email, hashedPassword})
 
 
-        return res.sendStatus(201);
+        return res.json(newUser);
     } catch(error) {
         console.log(error);
         next(error);
