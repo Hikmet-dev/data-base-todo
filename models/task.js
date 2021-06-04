@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const user = require('./user.js');
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     /**
@@ -10,30 +11,36 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Task.belongsTo(models.User, {as: "User", foreignKey: 'user_id'})
     }
-    toJSON(){
-      return{ ...this.get(), id: undefined }
-    }
+    
+
   };
   Task.init({
-    uuid: {
+    id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     done: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    user_id:{
+      type: DataTypes.UUID,
+      allowNull: false
     }
   }, {
     sequelize,
     modelName: 'Task',
+    tableName: 'Tasks',
+    freezeTableName: true
   });
+
   return Task;
 };

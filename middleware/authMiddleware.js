@@ -15,9 +15,8 @@ module.exports = (req, res, next) => {
             if(err) {
                 throw new ErrorHandler(400, 'Invalid token');
             }
-            req.user = decoded;
+            res.locals.user = decoded;
         });
-        
         next();
     } catch(error) {
         console.log(error);

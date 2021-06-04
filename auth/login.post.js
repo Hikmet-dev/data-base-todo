@@ -30,7 +30,7 @@ router.post('/login',
         if(!passVerif) {
             throw new ErrorHandler(400, 'Wrong password');
         };
-        const token = await jwt.sign({id: findUser.id, email: findUser.email}, 'memasik', { expiresIn: "20h" });
+        const token = await jwt.sign({id: findUser.id, email: findUser.email}, 'memasik', { expiresIn: "1h" });
 
         console.log(token);
 
