@@ -18,12 +18,11 @@ router.post('/task',
 
             const findTask = await Task.findOne({where: {user_id: id, name: body.name}});
 
-            if(findTask) {
-                throw new ErrorHandler(404, "The task already exists")
-            }
+            if(findTask) throw new ErrorHandler(404, "The task already exists");
 
             const task = await Task.create({ ...body, user_id: id });
             return res.json(task);
+            
         } catch (err) {
             console.log(err);
             next(err)

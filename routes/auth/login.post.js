@@ -4,8 +4,8 @@ const { body, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../../errors.js');
 const { User } = require('../../models');
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
-
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 
@@ -30,22 +30,14 @@ router.post('/login',
         if(!passVerif) {
             throw new ErrorHandler(400, 'Wrong password');
         };
-        const token = await jwt.sign({id: findUser.id, email: findUser.email}, 'memasik', { expiresIn: "1h" });
-
-        console.log(token);
-
-
+        const token = await jwt.sign({id: findUser.id}, process.env.SECRET_KEY, { expiresIn: "1h" });
         
-        return res.json({token});
-
-
+        return res.json({token: `Bearer ${token}`});
 
     } catch(error) {
         console.log(error);
         next(error)
     }
-        
-
 }); 
 
 module.exports = router;

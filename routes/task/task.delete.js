@@ -13,8 +13,7 @@ router.delete('/task/:idParam',
     async (req, res, next) => {
     try{
         const idParam = req.params.idParam;
-        const {id} = req.user;
-
+        const {id} = res.locals.user;
 
         const task = await Task.destroy({
             where: {
@@ -22,9 +21,9 @@ router.delete('/task/:idParam',
                 id: idParam
             }
         });
-        if (!task) {
-            throw new ErrorHandler().notFound('Task not found');
-        }
+        
+        if (!task) throw new ErrorHandler().notFound('Task not found');
+
         return res.sendStatus(200);
     } catch (error) {
         next(error)

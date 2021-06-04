@@ -4,11 +4,9 @@ const { handleError } = require('./errors.js');
 const { sequelize } = require('./models');
 const recursive = require('recursive-readdir-sync');
 
-
-
 const app = express();
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -22,9 +20,8 @@ app.use((err, req, res, next) => {
   });
 
 
-
 app.listen({port: PORT}, async () => {
-  console.log('Server uo on');
+  console.log(`Server on ${PORT}-port` );
   await sequelize.authenticate();
   console.log('Datebase synced!');
 });

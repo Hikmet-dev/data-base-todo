@@ -19,7 +19,7 @@ router.patch('/task/:idParam/',
             try{
                 const idParam = req.params['idParam'];
                 const body = req.body;
-                const {id, email} = res.locals.user;
+                const {id} = res.locals.user;
 
                 const findTask = await Task.findOne({
                     where: { 
@@ -38,11 +38,9 @@ router.patch('/task/:idParam/',
                     }
                 });
                 console.log(task);
-                if(!task[0]){
-                    throw new ErrorHandler(422, 'Task not found')
-                }
+                if(!task[0]) throw new ErrorHandler(422, 'Task not found');
 
-                return res.sendStatus(201);
+                return res.status(201).json();
 
             } catch (error) {
                 console.log(error);
