@@ -3,6 +3,7 @@ const taskGET =  require('./api/tasks.get.js');
 const taskDELETE = require('./api/task.delete.js');
 const taskPATCH =  require('./api/task.patch.js');
 const taskPOST =  require('./api/task.post.js');
+const signIn = require('./auth/signin.post.js');
 const morgan = require('morgan');
 const { handleError } = require('./errors.js');
 const { sequelize } = require('./models');
@@ -17,6 +18,7 @@ app.use(morgan('combined'));
 app.get('/', (req, res) => {
   return res.send('<h1>Data Base todo</h1>')
 });
+app.use(signIn);
 app.use(taskGET);
 app.use(taskPOST);
 app.use(taskPATCH);
@@ -32,6 +34,5 @@ app.use((err, req, res, next) => {
 
 app.listen({port: PORT}, async () => {
   console.log('Server uo on');
-  await sequelize.authenticate();
   console.log('Datebase synced!');
 });
