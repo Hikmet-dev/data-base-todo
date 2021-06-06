@@ -15,6 +15,7 @@ app.use(morgan('combined'));
 recursive(`${__dirname}/routes`)
     .forEach(file => app.use('/', require(file)));
 app.get('/', (req, res) => {
+  console.log("Hello eues");
   return res.send("hello")
 })
 app.use((err, req, res, next) => {
