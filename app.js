@@ -14,7 +14,9 @@ app.use(morgan('combined'));
 
 recursive(`${__dirname}/routes`)
     .forEach(file => app.use('/', require(file)));
-
+app.get('/', (req, res) => {
+  return res.send("hello")
+})
 app.use((err, req, res, next) => {
     handleError(err, res);
   });
