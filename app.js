@@ -1,4 +1,5 @@
 const express = require('express');
+var cors = require('cors')
 const morgan = require('morgan');
 const { handleError } = require('./errors.js');
 const { sequelize } = require('./models');
@@ -7,7 +8,7 @@ const recursive = require('recursive-readdir-sync');
 const app = express();
 
 const PORT = process.env.PORT || 3002;
-
+app.use(cors())
 app.use(express.json());
 
 app.use(morgan('combined'));
