@@ -4,16 +4,10 @@ const { User } = require('./user.js');
 
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
       Task.belongsTo(models.User, {as: "User", foreignKey: 'user_id'})
     }
-    
-
   };
   Task.init({
     id: {
@@ -44,6 +38,5 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Tasks',
     freezeTableName: true
   });
-
   return Task;
 };
