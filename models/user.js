@@ -1,8 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-const task = require('./task');
+const {Model} = require('sequelize');
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
@@ -28,9 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    hashedPassword:{
-      type: DataTypes.STRING(64),
+    password:{
+      type: DataTypes.STRING(),
       allowNull: false,
+      set(value) {
+        this.setDataValue('password', bcrypt.hashSync(value, 7))
+      }
     }
   }, {
     sequelize,

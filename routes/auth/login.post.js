@@ -11,25 +11,19 @@ require('dotenv').config();
 
 
 router.post('/login',
-    body('email').isEmail(),
+    body('email').trim().isEmail(),
     body('password').isString(),
     async (req, res, next) => {
     try{
         const errors = validationResult(req);
-        if(!errors) {
-            throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());
-        }
+        if(!errors) throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());
         const { email, password } = req.body;
 
         const findUser = await User.findOne({where: {email}});
-        if(!findUser) {
-            throw new ErrorHandler(400, 'User already exists');
-        };
+        if(!findUser) throw new ErrorHandler(400, 'User already exists');
 
-        const passVerif = bcrypt.compareSync(password, findUser.hashedPassword);
-        if(!passVerif) {
-            throw new ErrorHandler(400, 'Wrong password');
-        };
+        const passVerif = bcrypt.compareSync(password, findUser.password);
+        if(!passVerif) throw new ErrorHandler(400, 'Wrong password');
         const token = await jwt.sign({id: findUser.id}, process.env.SECRET_KEY, { expiresIn: "1h" });
         
         return res.json({token: `Bearer ${token}`});

@@ -21,7 +21,7 @@ module.exports = {
         unique: true,
         isEmail: true
       },
-      hashedPassword:{
+      password:{
         type: DataTypes.STRING,
         allowNull: false
       },

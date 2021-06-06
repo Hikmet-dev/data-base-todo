@@ -1,8 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-const user = require('./user.js');
+const { Model } = require('sequelize');
+const { User } = require('./user.js');
+
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     /**
@@ -33,7 +32,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     user_id:{
       type: DataTypes.UUID,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: User,
+        key: 'id'
+      }
     }
   }, {
     sequelize,
