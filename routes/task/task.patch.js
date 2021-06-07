@@ -7,8 +7,8 @@ const authMiddleware = require('../../middleware/authMiddleware.js');
 const errorMiddleware = require('../../middleware/errorMiddleware.js');
 
 router.patch('/task/:idParam/', 
-            body('done').optional({checkFalsy: true}).isBoolean(), 
-            body('name').optional({checkFalsy: true}).trim().isString().isLength({min: 3}), 
+            body('done').isBoolean().optional({checkFalsy: true}), 
+            body('name').trim().isString().isLength({min: 3}).optional({checkFalsy: true}), 
             param('idParam').isUUID(),
             errorMiddleware,
             authMiddleware, 
@@ -20,9 +20,10 @@ router.patch('/task/:idParam/',
 
                 const findTask = await Task.findOne({
                     where: { 
-                        user_id: "03874559-bed0-4db0-8c91-ce7b62f2385e"
+                        user_id: id
                     }});
-                    console.log(findTask);
+
+                if (!findTask) throw new ErrorHandler.badRequest("Task not found")  
                 if(findTask.name === body.name) throw new ErrorHandler(404, "The task already exists");
 
                 const task = await Task.update({ ...body }, {
@@ -31,10 +32,10 @@ router.patch('/task/:idParam/',
                         id: idParam
                     }
                 });
-                console.log(task);
                 if(!task[0]) throw new ErrorHandler(422, 'Task not found');
 
-                return res.status(201);
+
+                return res.sendStatus(201);
 
             } catch (error) {
                 console.log(error);
