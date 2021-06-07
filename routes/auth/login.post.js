@@ -14,16 +14,16 @@ router.post('/login',
     try{
         const errors = validationResult(req);
         if(!errors) throw new ErrorHandler().badRequest('Invalid fields in request', errors.array());
-        const { email, password } = req.body;
+        const { email: reqEmail, password: reqPassword } = req.body;
 
-        const findUser = await User.findOne({where: {email}});
-        if(!findUser) throw new ErrorHandler(400, 'User does not exist');
+        const {id, firstName, lastName, email, password }  = await User.findOne({where: {email: reqEmail}});
+        if(!email) throw new ErrorHandler(400, 'User does not exist');
 
-        const passVerif = bcrypt.compareSync(password, findUser.password);
+        const passVerif = bcrypt.compareSync(reqPassword, password);
         if(!passVerif) throw new ErrorHandler(400, 'Wrong password');
-        const token = await jwt.sign({id: findUser.id}, process.env.SECRET_KEY, { expiresIn: "1h" });
+        const token = await jwt.sign({id}, process.env.SECRET_KEY, { expiresIn: "1h" });
         
-        return res.json({token: `Bearer ${token}`});
+        return res.json({token: `Bearer ${token}`, firstName, lastName, email });
 
     } catch(error) {
         console.log(error);

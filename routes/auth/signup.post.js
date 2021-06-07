@@ -4,6 +4,10 @@ const { body } = require('express-validator');
 const { ErrorHandler } = require('../../errors.js');
 const { User } = require('../../models');
 const errorMiddleware = require('../../middleware/errorMiddleware.js');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 
 router.post('/signup',
     body('firstName').trim().isString(), 
@@ -19,7 +23,9 @@ router.post('/signup',
         if(findUser) throw new ErrorHandler(400, 'User already exists');
 
         const newUser = await User.create({firstName, lastName, email, password});
-        return res.send(201).json(newUser);
+        console.log(newUser);
+        return res.sendStatus(201);
+
     } catch(error) {
         console.log(error);
         next(error);
