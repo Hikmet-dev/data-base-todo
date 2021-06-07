@@ -4,8 +4,6 @@ const { body } = require('express-validator');
 const { ErrorHandler } = require('../../errors.js');
 const { User } = require('../../models');
 const errorMiddleware = require('../../middleware/errorMiddleware.js');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 
