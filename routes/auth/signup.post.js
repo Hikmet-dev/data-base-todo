@@ -18,8 +18,8 @@ router.post('/signup',
         const findUser = await User.findOne({where: {email}});
         if(findUser) throw new ErrorHandler(400, 'User already exists');
 
-        const {name, email} = await User.create({firstName, lastName, email, password});
-        return res.send(201).json({name, email});
+        const newUser = await User.create({firstName, lastName, email, password});
+        return res.send(201).json(newUser);
     } catch(error) {
         console.log(error);
         next(error);
