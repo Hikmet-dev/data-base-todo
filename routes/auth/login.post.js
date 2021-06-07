@@ -7,9 +7,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
-
-
 router.post('/login',
     body('email').trim().isEmail(),
     body('password').isString(),
@@ -20,7 +17,7 @@ router.post('/login',
         const { email, password } = req.body;
 
         const findUser = await User.findOne({where: {email}});
-        if(!findUser) throw new ErrorHandler(400, 'User already exists');
+        if(!findUser) throw new ErrorHandler(400, 'User does not exist');
 
         const passVerif = bcrypt.compareSync(password, findUser.password);
         if(!passVerif) throw new ErrorHandler(400, 'Wrong password');

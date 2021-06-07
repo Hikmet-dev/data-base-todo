@@ -1,5 +1,5 @@
 const express = require('express');
-var cors = require('cors')
+const cors = require('cors')
 const morgan = require('morgan');
 const { handleError } = require('./errors.js');
 const { sequelize } = require('./models');
