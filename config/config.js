@@ -24,12 +24,13 @@ require('dotenv').config({ path: __dirname + '/.env' });
     port: process.env.DB_PROD_PORT,
     dialect: "postgres",
     ssl: true,
-    timezone: '+04:00',
     dialectOptions: {
+      useUTC: true,
       ssl: {
         require: true,
         rejectUnauthorized: false
       }
-    }
+    },
+    timezone: '+04:00'
   }
 }
