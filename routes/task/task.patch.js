@@ -1,15 +1,20 @@
 const { Router } = require('express');
-const { body, param } = require('express-validator');
+const { body, param, query } = require('express-validator');
 const { ErrorHandler } = require('../../errors.js');
 const { Task } = require('../../models');
 const router = Router();
 const authMiddleware = require('../../middleware/authMiddleware.js');
 const errorMiddleware = require('../../middleware/errorMiddleware.js');
+const getTaskController = require('../../controllers/getTaskController');
 
 router.patch('/task/:idParam/', 
             body('done').isBoolean().optional({checkFalsy: true}), 
             body('name').trim().isString().isLength({min: 3}).optional({checkFalsy: true}), 
             param('idParam').isUUID(),
+            query('filterBy').optional({checkFalsy: true}).isString().isIn(['all', 'done', 'undone']),
+            query('order').isString().toUpperCase().isIn(['ASC', 'DESC']).optional({checkFalsy: true}),
+            query('page').default(1).isInt(),
+            query('taskCount').default(100).isInt(),
             errorMiddleware,
             authMiddleware, 
             async (req, res, next) => {
@@ -22,7 +27,6 @@ router.patch('/task/:idParam/',
                     where: { 
                         user_id: id
                     }});
-
                 if (!findTask) throw new ErrorHandler.badRequest("Task not found")  
                 if(findTask.name === body.name) throw new ErrorHandler(404, "The task already exists");
 
@@ -34,13 +38,11 @@ router.patch('/task/:idParam/',
                 });
                 if(!task[0]) throw new ErrorHandler(422, 'Task not found');
 
-
-                return res.sendStatus(201);
-
+                next()
             } catch (error) {
                 console.log(error);
                 next(error);
             };
-});
+}, getTaskController);
 
 module.exports = router;
