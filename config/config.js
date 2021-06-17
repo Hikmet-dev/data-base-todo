@@ -1,19 +1,20 @@
 require('dotenv').config({ path: __dirname + '/.env' });
  module.exports = {
   development: {
-    "username": "postgres",
-    "password": "437668820Asd",
-    "database": "db_todo",
-    "host": "localhost",
-    "port": 5432,
-    "dialect": "postgres"
+    username: "postgres",
+    password: "437668820Asd",
+    database: "db_todo",
+    host: "localhost",
+    port: 5432,
+    dialect: "postgres",
+    timezone: '+04:00'
   },
   test: {
-    "username": "postgres",
-    "password": "437668820Asd",
-    "database": "db_todo",
-    "host": "localhost",
-    "dialect": "postgres"
+    username: "postgres",
+    password: "437668820Asd",
+    database: "db_todo",
+    host: "localhost",
+    dialect: "postgres"
   },
   production: {
     username: process.env.DB_PROD_USER,
@@ -23,6 +24,7 @@ require('dotenv').config({ path: __dirname + '/.env' });
     port: process.env.DB_PROD_PORT,
     dialect: "postgres",
     ssl: true,
+    timezone: '+04:00',
     dialectOptions: {
       ssl: {
         require: true,
