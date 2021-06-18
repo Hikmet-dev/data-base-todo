@@ -10,11 +10,11 @@ module.exports = {
   }, {
     after: 'id'
  });
- queryInterface.addConstraint('Tasks', {
+ await queryInterface.addConstraint('Tasks', {
   fields: ['user_id'],
   type: 'foreign key',
   name: 'custom_fkey_constraint_user_id',
-  references: { //Required field
+  references: { 
     table: 'Users',
     field: 'id'
   },
